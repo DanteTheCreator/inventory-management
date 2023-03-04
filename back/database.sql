@@ -1,0 +1,8 @@
+CREATE DATABASE inventoryDB;
+
+CREATE TABLE inventory(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price FLOAT(255, 2) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+)
