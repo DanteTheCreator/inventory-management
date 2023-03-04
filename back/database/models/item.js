@@ -4,7 +4,7 @@ const sequelize = new Sequelize('inventorydb', 'postgres', '' , {
   dialect: 'postgres',
 });
 
-const Item = sequelize.define('User', {
+const Item = sequelize.define('Item', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -13,10 +13,23 @@ const Item = sequelize.define('User', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
-  password: {
+  location: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  createdAt: {
+    allowNull: false,
+    defaultValue: new Date(),
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    allowNull: false,
+    defaultValue: new Date(),
+    type: Sequelize.DATE
+  }
 });
 
 module.exports = { Item };
+
+
+
