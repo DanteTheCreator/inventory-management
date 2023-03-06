@@ -132,6 +132,11 @@ const TableComponent: React.FC = () => {
               Next
             </button>
           </li>
+          <li className={`page-item${currentPage === numPages ? " disabled" : ""}`}>
+            <span className='badge bg-primary mx-3 mt-2'>
+              <>Total: {data?.length}</>
+            </span>
+          </li>
         </ul>
       </nav>
     </>

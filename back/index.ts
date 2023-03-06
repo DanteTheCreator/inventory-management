@@ -9,24 +9,37 @@ const sequelize = new Sequelize("inventorydb", "postgres", "", {
   host: "localhost",
   dialect: "postgres",
 });
+
+
+
 /**
- * 
  * can easily add dummy data
+ * uncomment call below if you need to add data
  */
 
-const addDummyData = (rows:number) => {
-  const locationOptions = ['Main Office', 'Cavea Gallery', 'Cavea Tbilisi Mall', 'Cavea East Point', 'Cavea City Mall']
-  const nameOptions = ['Movie', 'TV', 'DVD', 'CD', 'Screen', 'Couch']
-  for (let i = 0; i <= rows; i++){
-    Item.create({
-      id: 1000 + Math.floor(Math.random() * 300000),
-      name: nameOptions[Math.floor(Math.random()*nameOptions.length)],
-      price: Math.floor(Math.random() * (10000 - 100 + 1) + 100),
-      location: locationOptions[Math.floor(Math.random()*locationOptions.length)],
-    });
+const addDummyData = async (rows: number) => {
+  const locationOptions = [
+    "Main Office",
+    "Cavea Gallery",
+    "Cavea Tbilisi Mall",
+    "Cavea East Point",
+    "Cavea City Mall",
+  ];
+  const nameOptions = ["Movie", "TV", "DVD", "CD", "Screen", "Couch"];
+  const items = await Item.findAll();
+  for (let i = 0; i <= rows; i++) {
+    const id = 1000 + Math.floor(Math.random() * 300000000);
+    if (id in items) {
+    } else {
+      Item.create({
+        id,
+        name: nameOptions[Math.floor(Math.random() * nameOptions.length)],
+        price: Math.floor(Math.random() * (10000 - 100 + 1) + 100),
+        location: locationOptions[Math.floor(Math.random() * locationOptions.length)],
+      });
+    }
   }
-}
-
+};
 
 app.use(cors());
 app.use(express.json());
@@ -36,9 +49,8 @@ app.use(express.json());
   console.log("Database synchronized for sure!");
 })();
 
-
 // remove comment from below function to add however many rows of dummy data you want
-// addDummyData(1500)
+// addDummyData(10000);
 
 app.get("/inventories", async (req: Request, res: Response) => {
   const items = await Item.findAll();

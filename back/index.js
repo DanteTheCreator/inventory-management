@@ -22,21 +22,33 @@ const sequelize = new Sequelize("inventorydb", "postgres", "", {
     dialect: "postgres",
 });
 /**
- *
  * can easily add dummy data
+ * uncomment call below if you need to add data
  */
-const addDummyData = (rows) => {
-    const locationOptions = ['Main Office', 'Cavea Gallery', 'Cavea Tbilisi Mall', 'Cavea East Point', 'Cavea City Mall'];
-    const nameOptions = ['Movie', 'TV', 'DVD', 'CD', 'Screen', 'Couch'];
+const addDummyData = (rows) => __awaiter(void 0, void 0, void 0, function* () {
+    const locationOptions = [
+        "Main Office",
+        "Cavea Gallery",
+        "Cavea Tbilisi Mall",
+        "Cavea East Point",
+        "Cavea City Mall",
+    ];
+    const nameOptions = ["Movie", "TV", "DVD", "CD", "Screen", "Couch"];
+    const items = yield Item.findAll();
     for (let i = 0; i <= rows; i++) {
-        Item.create({
-            id: 1000 + Math.floor(Math.random() * 300000),
-            name: nameOptions[Math.floor(Math.random() * nameOptions.length)],
-            price: Math.floor(Math.random() * (10000 - 100 + 1) + 100),
-            location: locationOptions[Math.floor(Math.random() * locationOptions.length)],
-        });
+        const id = 1000 + Math.floor(Math.random() * 300000000);
+        if (id in items) {
+        }
+        else {
+            Item.create({
+                id,
+                name: nameOptions[Math.floor(Math.random() * nameOptions.length)],
+                price: Math.floor(Math.random() * (10000 - 100 + 1) + 100),
+                location: locationOptions[Math.floor(Math.random() * locationOptions.length)],
+            });
+        }
     }
-};
+});
 app.use(cors());
 app.use(express_1.default.json());
 (() => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,7 +56,7 @@ app.use(express_1.default.json());
     console.log("Database synchronized for sure!");
 }))();
 // remove comment from below function to add however many rows of dummy data you want
-// addDummyData(1500)
+// addDummyData(10000);
 app.get("/inventories", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const items = yield Item.findAll();
     res.json(items);
