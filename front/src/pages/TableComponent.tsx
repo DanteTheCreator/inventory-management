@@ -10,8 +10,8 @@ type TableData = {
 
 const TableComponent: React.FC = () => {
   const [data, setData] = useState<TableData[]>();
-  const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 20;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const entriesPerPage: number = 20;
   const numPages = Math.ceil(data?.length ? data.length / entriesPerPage : 0);
 
   const handlePageChange = (pageNumber: number) => {
@@ -19,8 +19,8 @@ const TableComponent: React.FC = () => {
   };
 
   const getPageNumbers = (currentPage: number, numPages: number, maxPagesToShow: number) => {
-    const startPage = Math.max(1, currentPage - maxPagesToShow);
-    const endPage = Math.min(numPages, currentPage + maxPagesToShow);
+    const startPage: number = Math.max(1, currentPage - maxPagesToShow);
+    const endPage: number = Math.min(numPages, currentPage + maxPagesToShow);
     const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
     return pages;
   };
@@ -31,15 +31,29 @@ const TableComponent: React.FC = () => {
   const endIndex = startIndex + entriesPerPage;
   const currentEntries = data?.slice(startIndex, endIndex);
 
-  const getData = () => {
-    fetch("http://localhost:8080/inventories").then((response): any => {
-      response
-        .json()
+  const getData = (path?: string) => {
+    if (path) {
+      fetch(`http://localhost:8080/inventories/${path}`).then((response): any => {
+        response
+          .json()
 
-        .then((apiData) => {
-          setData(apiData);
-        });
-    });
+          .then((apiData) => {
+            setData(apiData);
+          });
+      });
+    } else {
+      fetch(`http://localhost:8080/inventories`).then((response): any => {
+        response
+          .json()
+
+          .then((apiData) => {
+            setData(apiData);
+          });
+      });
+    }
+  };
+  const handleFilter = (e: string) => {
+    getData(e);
   };
   const handleDelete = (index: number) => {
     fetch(`http://localhost:8080/inventories/${index}`, {
@@ -52,10 +66,23 @@ const TableComponent: React.FC = () => {
     getData();
   }, []);
 
-
   return (
     <>
       <Link to='/add'>Add</Link>
+      <br />
+      <select
+        id='location'
+        className='form-select'
+        onChange={(event) => handleFilter(event.target.value)}
+        required
+      >
+        <option>Choose Location:</option>
+        <option value='Main Office'>Main Office</option>
+        <option value='Cavea Gallery'>Cavea Gallery</option>
+        <option value='Cavea Tbilisi Mall'>Cavea Tbilisi Mall</option>
+        <option value='Cavea East Point'>Cavea East Point</option>
+        <option value='Cavea City Mall'>Cavea City Mall</option>
+      </select>
       <table className='table table-striped table-bordered table-hover'>
         <thead>
           <tr>
@@ -70,8 +97,9 @@ const TableComponent: React.FC = () => {
             currentEntries.map((row: any) => (
               <tr key={row.id}>
                 <td>{row.name}</td>
-                <td>{row.price} GEL</td>
                 <td>{row.location}</td>
+
+                <td>{row.price} GEL</td>
                 <td>
                   <button
                     type='button'
@@ -85,22 +113,22 @@ const TableComponent: React.FC = () => {
             ))}
         </tbody>
       </table>
-      <nav className="d-flex justify-content-center">
-        <ul className="pagination">
-          <li className={`page-item${currentPage === 1 ? ' disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+      <nav className='d-flex justify-content-center'>
+        <ul className='pagination'>
+          <li className={`page-item${currentPage === 1 ? " disabled" : ""}`}>
+            <button className='page-link' onClick={() => handlePageChange(currentPage - 1)}>
               Previous
             </button>
           </li>
           {pageNumbers.map((page) => (
-            <li key={page} className={`page-item${currentPage === page ? ' active' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(page)}>
+            <li key={page} className={`page-item${currentPage === page ? " active" : ""}`}>
+              <button className='page-link' onClick={() => handlePageChange(page)}>
                 {page}
               </button>
             </li>
           ))}
-          <li className={`page-item${currentPage === numPages ? ' disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+          <li className={`page-item${currentPage === numPages ? " disabled" : ""}`}>
+            <button className='page-link' onClick={() => handlePageChange(currentPage + 1)}>
               Next
             </button>
           </li>
@@ -109,6 +137,5 @@ const TableComponent: React.FC = () => {
     </>
   );
 };
-
 
 export default TableComponent;
