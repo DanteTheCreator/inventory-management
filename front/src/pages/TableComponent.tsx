@@ -68,22 +68,26 @@ const TableComponent: React.FC = () => {
 
   return (
     <>
-      <Link to='/add'>Add</Link>
-      <br />
-      <select
-        id='location'
-        className='form-select'
-        onChange={(event) => handleFilter(event.target.value)}
-        required
-      >
-        <option>Choose Location:</option>
-        <option value='Main Office'>Main Office</option>
-        <option value='Cavea Gallery'>Cavea Gallery</option>
-        <option value='Cavea Tbilisi Mall'>Cavea Tbilisi Mall</option>
-        <option value='Cavea East Point'>Cavea East Point</option>
-        <option value='Cavea City Mall'>Cavea City Mall</option>
-      </select>
-      <table className='table table-striped table-bordered table-hover'>
+      <div className="d-flex justify-content-center mt-2 mb-2">
+        <Link to='/add' className=''>
+          Add
+        </Link>
+
+        <select
+          id='location'
+          className='form-select mx-2'
+          onChange={(event) => handleFilter(event.target.value)}
+          required
+        >
+          <option>Choose Location:</option>
+          <option value='Main Office'>Main Office</option>
+          <option value='Cavea Gallery'>Cavea Gallery</option>
+          <option value='Cavea Tbilisi Mall'>Cavea Tbilisi Mall</option>
+          <option value='Cavea East Point'>Cavea East Point</option>
+          <option value='Cavea City Mall'>Cavea City Mall</option>
+        </select>
+      </div>
+      <table className='table table-striped table-bordered table-hover w-75 mx-auto'>
         <thead>
           <tr>
             <th>Location</th>
@@ -99,11 +103,11 @@ const TableComponent: React.FC = () => {
                 <td>{row.name}</td>
                 <td>{row.location}</td>
 
-                <td>{row.price} GEL</td>
+                <td>{row.price} ₾ </td>
                 <td>
                   <button
                     type='button'
-                    className='btn btn-danger'
+                    className='btn btn-danger mx-0'
                     onClick={() => handleDelete(row.id)}
                   >
                     Delete

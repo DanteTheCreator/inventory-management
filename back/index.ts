@@ -1,15 +1,7 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 const { Item } = require("./database/models/item");
 const app: Express = express();
 const cors = require("cors");
-const Sequelize = require("sequelize");
-
-const sequelize = new Sequelize("inventorydb", "postgres", "", {
-  host: "localhost",
-  dialect: "postgres",
-});
-
 
 
 /**
@@ -17,15 +9,15 @@ const sequelize = new Sequelize("inventorydb", "postgres", "", {
  * uncomment call below if you need to add data
  */
 
-const addDummyData = async (rows: number) => {
-  const locationOptions = [
+const addDummyData = async (rows: number): Promise<void> => {
+  const locationOptions: string[] = [
     "Main Office",
     "Cavea Gallery",
     "Cavea Tbilisi Mall",
     "Cavea East Point",
     "Cavea City Mall",
   ];
-  const nameOptions = ["Movie", "TV", "DVD", "CD", "Screen", "Couch"];
+  const nameOptions: string[] = ["Movie", "TV", "DVD", "CD", "Screen", "Couch"];
   const items = await Item.findAll();
   for (let i = 0; i <= rows; i++) {
     const id = 1000 + Math.floor(Math.random() * 300000000);

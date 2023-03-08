@@ -16,11 +16,6 @@ const express_1 = __importDefault(require("express"));
 const { Item } = require("./database/models/item");
 const app = (0, express_1.default)();
 const cors = require("cors");
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize("inventorydb", "postgres", "", {
-    host: "localhost",
-    dialect: "postgres",
-});
 /**
  * can easily add dummy data
  * uncomment call below if you need to add data
